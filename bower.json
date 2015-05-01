@@ -18,8 +18,9 @@
     "web",
     "development"
   ],
-  "homepage": "https://github.com/fengyuanchen/cropper",
+  "homepage": "https://github.com/olignyf/cropper",
   "authors": [
+    "Francois Oligny-Lemieux",
     "Fengyuan Chen"
   ],
   "license": "MIT",

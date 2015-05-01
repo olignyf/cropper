@@ -38,8 +38,8 @@ dist/
 
 Four quick start options are available:
 
-- [Download the latest release](https://github.com/fengyuanchen/cropper/archive/master.zip).
-- Clone the repository: `git clone https://github.com/fengyuanchen/cropper.git`.
+- [Download the latest release](https://github.com/olignyf/cropper/archive/master.zip).
+- Clone the repository: `git clone https://github.com/olignyf/cropper.git`.
 - Install with [NPM](http://npmjs.org): `npm install cropper`.
 - Install with [Bower](http://bower.io): `bower install cropper`.
 
@@ -54,6 +54,16 @@ Include files:
 <link  href="/path/to/cropper.css" rel="stylesheet">
 <script src="/path/to/cropper.js"></script>
 ```
+
+
+### For Developers
+
+Packages are managed with npm and package.json
+
+$> npm install -g bower
+$> cd cropper.git (your local checkout)
+$> npm install (this installs devDependancies)
+$> grunt (this does the actual css/js compression)
 
 #### CDN
 

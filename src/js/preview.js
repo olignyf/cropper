@@ -2,7 +2,15 @@
     var url = this.url;
 
     this.$preview = $(this.options.preview);
-    this.$viewBox.html('<img src="' + url + '">');
+
+    if (this.options.forceCanvasSize)
+    {
+      this.$viewBox.html('');
+    }
+    else
+    {
+      this.$viewBox.html('<img src="' + url + '">');
+    }
 
     // Override img element styles
     // Add `display:block` to avoid margin top issue (Occur only when margin-top <= -height)
@@ -39,13 +47,17 @@
       return;
     }
 
-    this.$viewBox.find('img').css({
-      width: width,
-      height: height,
-      marginLeft: -left,
-      marginTop: -top,
-      transform: getRotateValue(rotate)
-    });
+
+    if (this.options.forceCanvasSize === null)
+    {
+      this.$viewBox.find('img').css({
+          width: width,
+          height: height,
+          marginLeft: -left,
+          marginTop: -top,
+          transform: getRotateValue(rotate)
+      });
+    }
 
     this.$preview.each(function () {
       var $this = $(this),

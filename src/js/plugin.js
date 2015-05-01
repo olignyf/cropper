@@ -12,7 +12,13 @@
           fn;
 
       if (!data) {
+        // first time initialization
         $this.data('cropper', (data = new Cropper(this, options)));
+
+        // first callback
+        if (data.options.crop && data.built)
+        {  data.options.crop.call(data.$element, data.getData());
+        }
       }
 
       if (typeof options === 'string' && $.isFunction((fn = data[options]))) {

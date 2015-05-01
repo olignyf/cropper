@@ -66,8 +66,8 @@
 
     this.setDragMode(options.dragCrop ? 'crop' : 'move');
 
-    this.built = true;
     this.render();
+    this.built = true;
     $this.one(EVENT_BUILT, options.built).trigger(EVENT_BUILT); // Only trigger once
   };
 

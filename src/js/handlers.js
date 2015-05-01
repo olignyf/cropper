@@ -31,6 +31,10 @@
         return;
       }
 
+      if (this.options.dblClickEnabled === false) {
+        return;
+      }
+
       if (this.$dragBox.hasClass(CLASS_CROP)) {
         this.setDragMode('move');
       } else {

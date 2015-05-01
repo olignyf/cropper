@@ -33,6 +33,7 @@
     zoomable: true, // Enable to zoom the image
     touchDragZoom: true, // Enable to zoom the image by wheeling mouse
     mouseWheelZoom: true, // Enable to zoom the image by dragging touch
+    dblClickEnabled: true, // Set to false to prevent double click from changing mode
 
     // Dimensions
     minCanvasWidth: 0,
@@ -41,6 +42,9 @@
     minCropBoxHeight: 0,
     minContainerWidth: 200,
     minContainerHeight: 100,
+
+    cropData: null, // to set initial dimensions of crop box
+    forceCanvasSize: null, // will use a division and follow these dimensions instead of using img and img.naturalWidth/Height
 
     // Events
     build: null, // Function

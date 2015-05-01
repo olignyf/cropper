@@ -18,6 +18,7 @@
       CLASS_CROP = 'cropper-crop',
       CLASS_DISABLED = 'cropper-disabled',
       CLASS_BG = 'cropper-bg',
+      CLASS_IMG_REPLACEMENT = 'img-replacement',
 
       // Events
       EVENT_MOUSE_DOWN = 'mousedown touchstart',

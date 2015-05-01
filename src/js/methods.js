@@ -122,11 +122,16 @@
     getData: function () {
       var cropBox = this.cropBox,
           canvas = this.canvas,
-          image = this.image,
+          image,
+          rotate,
           ratio,
           data;
 
       if (this.built && this.cropped) {
+
+        image = this.image;
+        rotate = this.image.rotate;
+
         data = {
           x: cropBox.left - canvas.left,
           y: cropBox.top - canvas.top,
@@ -204,17 +209,28 @@
       }
     },
 
-    getCropBoxData: function () {
+    getCropBoxData: function (adjustWithRatio) {
       var cropBox = this.cropBox,
           data;
 
       if (this.built && this.cropped) {
+
+        var ratio = this.image.width / this.image.naturalWidth;
+
         data = {
           left: cropBox.left,
           top: cropBox.top,
           width: cropBox.width,
           height: cropBox.height
         };
+
+        if (adjustWithRatio === true)
+        {
+          data.left = data.left / ratio;
+          data.top = data.top / ratio;
+          data.width = data.width / ratio;
+          data.height = data.height / ratio;
+        }
       }
 
       return data || {};
@@ -224,31 +240,65 @@
       var cropBox = this.cropBox,
           aspectRatio = this.options.aspectRatio;
 
-      if (this.built && this.cropped && !this.disabled && $.isPlainObject(data)) {
+      if (this.built && this.cropped && !this.disabled && $.isPlainObject(data))
+      {
 
-        if (isNumber(data.left)) {
-          cropBox.left = data.left;
-        }
+        if (false)
+        {
+          var ratio = this.image.width / this.image.naturalWidth;
 
-        if (isNumber(data.top)) {
-          cropBox.top = data.top;
-        }
-
-        if (aspectRatio) {
-          if (isNumber(data.width)) {
-            cropBox.width = data.width;
-            cropBox.height = cropBox.width / aspectRatio;
-          } else if (isNumber(data.height)) {
-            cropBox.height = data.height;
-            cropBox.width = cropBox.height * aspectRatio;
-          }
-        } else {
-          if (isNumber(data.width)) {
-            cropBox.width = data.width;
+          if (isNumber(data.left)) {
+            cropBox.left = data.left * ratio;
           }
 
-          if (isNumber(data.height)) {
-            cropBox.height = data.height;
+          if (isNumber(data.top)) {
+            cropBox.top = data.top * ratio;
+          }
+
+          if (aspectRatio) {
+            if (isNumber(data.width)) {
+              cropBox.width = data.width * ratio;
+              cropBox.height = cropBox.width / aspectRatio;
+            } else if (isNumber(data.height)) {
+              cropBox.height = data.height * ratio;
+              cropBox.width = cropBox.height * aspectRatio;
+            }
+          } else {
+            if (isNumber(data.width)) {
+              cropBox.width = data.width * ratio;
+            }
+
+            if (isNumber(data.height)) {
+              cropBox.height = data.height * ratio;
+            }
+          }
+        }
+        else
+        {
+          if (isNumber(data.left)) {
+            cropBox.left = data.left;
+          }
+
+          if (isNumber(data.top)) {
+            cropBox.top = data.top;
+          }
+
+          if (aspectRatio) {
+            if (isNumber(data.width)) {
+              cropBox.width = data.width;
+              cropBox.height = cropBox.width / aspectRatio;
+            } else if (isNumber(data.height)) {
+              cropBox.height = data.height;
+              cropBox.width = cropBox.height * aspectRatio;
+            }
+          } else {
+            if (isNumber(data.width)) {
+              cropBox.width = data.width;
+            }
+
+            if (isNumber(data.height)) {
+              cropBox.height = data.height;
+            }
           }
         }
 

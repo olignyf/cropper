@@ -242,10 +242,15 @@
           canvas = this.canvas,
           aspectRatio = options.aspectRatio,
           autoCropArea = num(options.autoCropArea) || 0.8,
+          // container = this.container,
+          // containerWidth = container.width,
+          // containerHeight = container.height,
           cropBox = {
             width: canvas.width,
             height: canvas.height
           };
+
+      // var  = this.image.width / this.image.naturalWidth;
 
       if (aspectRatio) {
         if (canvas.height * aspectRatio > canvas.width) {
@@ -261,12 +266,24 @@
       // Initialize auto crop area
       cropBox.width = min(max(cropBox.width, cropBox.minWidth), cropBox.maxWidth);
       cropBox.height = min(max(cropBox.height, cropBox.minHeight), cropBox.maxHeight);
+      // cropBox.width = min(max(cropBox.width, cropBox.minWidth) * , cropBox.maxWidth * );
+      // cropBox.height = min(max(cropBox.height, cropBox.minHeight) * , cropBox.maxHeight * );
+      // frank//cropBox.minWidth = min(cropBox.maxWidth * , cropBox.minWidth * );
+      // frank//cropBox.minHeight = min(cropBox.maxHeight * , cropBox.minHeight * );
 
       // The width of auto crop area must large than "minWidth", and the height too. (#164)
       cropBox.width = max(cropBox.minWidth, cropBox.width * autoCropArea);
       cropBox.height = max(cropBox.minHeight, cropBox.height * autoCropArea);
       cropBox.oldLeft = cropBox.left = canvas.left + (canvas.width - cropBox.width) / 2;
       cropBox.oldTop = cropBox.top = canvas.top + (canvas.height - cropBox.height) / 2;
+
+      if (options.cropData !== null)
+      {
+        cropBox.width = max(cropBox.minWidth, options.cropData.width);
+        cropBox.height = max(cropBox.minHeight, options.cropData.height);
+        // cropBox.oldLeft = cropBox.left = min(options.cropData.left, containerWidth - cropBox.width);
+        // cropBox.oldTop = cropBox.top = min(options.cropData.top, containerHeight - cropBox.height);
+      }
 
       this.initialCropBox = $.extend({}, cropBox);
     },
@@ -373,7 +390,7 @@
 
       this.preview();
 
-      if (options.crop) {
+      if (options.crop && this.built) { // output()
         options.crop.call(this.$element, this.getData());
       }
     }

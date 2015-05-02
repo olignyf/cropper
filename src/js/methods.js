@@ -215,7 +215,10 @@
 
       if (this.built && this.cropped) {
 
-        var ratio = this.image.width / this.image.naturalWidth;
+        var ratio = 1;
+        if (adjustWithRatio === true && this.options.forceCanvasSize !== null)
+        { ratio = this.container.width / this.image.naturalWidth; // nominator is the available space, denominator is the forced width.
+        }
 
         data = {
           left: cropBox.left,
@@ -226,26 +229,26 @@
 
         if (adjustWithRatio === true)
         {
-          data.left = data.left / ratio;
-          data.top = data.top / ratio;
-          data.width = data.width / ratio;
-          data.height = data.height / ratio;
+          data.left = Math.round(data.left / ratio);
+          data.top = Math.round(data.top / ratio);
+          data.width = Math.round(data.width / ratio);
+          data.height = Math.round(data.height / ratio);
         }
       }
 
       return data || {};
     },
 
-    setCropBoxData: function (data) {
+    setCropBoxData: function (data)
+    {
       var cropBox = this.cropBox,
           aspectRatio = this.options.aspectRatio;
 
       if (this.built && this.cropped && !this.disabled && $.isPlainObject(data))
       {
-
-        if (false)
+        if (this.options.forceCanvasSize !== null)
         {
-          var ratio = this.image.width / this.image.naturalWidth;
+          var ratio = this.container.width / this.image.naturalWidth; // nominator is the available space, denominator is the forced width.
 
           if (isNumber(data.left)) {
             cropBox.left = data.left * ratio;
@@ -274,7 +277,7 @@
           }
         }
         else
-        {
+        { // original code
           if (isNumber(data.left)) {
             cropBox.left = data.left;
           }

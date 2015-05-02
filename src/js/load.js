@@ -37,29 +37,48 @@
       }
     }
 
-    this.$clone = $clone = $('<img>');
-
-    $clone.one('load', $.proxy(function () {
-      var naturalWidth = $clone.prop('naturalWidth') || $clone.width(),
-          naturalHeight = $clone.prop('naturalHeight') || $clone.height();
+    if (this.options.forceCanvasSize !== null)
+    {
+      this.$clone = $clone = $('<div>');
+      this.$clone.width(this.options.forceCanvasSize.width);
+      this.$clone.height(this.options.forceCanvasSize.height);
+      this.$clone.addClass(CLASS_IMG_REPLACEMENT);
 
       this.image = {
-        naturalWidth: naturalWidth,
-        naturalHeight: naturalHeight,
-        aspectRatio: naturalWidth / naturalHeight,
+        naturalWidth: this.options.forceCanvasSize.width,
+        naturalHeight: this.options.forceCanvasSize.height,
+        aspectRatio: this.options.forceCanvasSize.width / this.options.forceCanvasSize.height,
         rotate: 0
       };
 
-      this.url = url;
       this.ready = true;
       this.build();
-    }, this)).one('error', function () {
-      $clone.remove();
-    }).attr({
-      crossOrigin: crossOrigin, // "crossOrigin" must before "src" (#271)
-      src: bustCacheUrl || url
-    });
+    }
+    else
+    {
+      this.$clone = $clone = $('<img>');
 
+      $clone.one('load', $.proxy(function () {
+        var naturalWidth = $clone.prop('naturalWidth') || $clone.width(),
+            naturalHeight = $clone.prop('naturalHeight') || $clone.height();
+
+        this.image = {
+          naturalWidth: naturalWidth,
+          naturalHeight: naturalHeight,
+          aspectRatio: naturalWidth / naturalHeight,
+          rotate: 0
+        };
+
+        this.url = url;
+        this.ready = true;
+        this.build();
+      }, this)).one('error', function () {
+        $clone.remove();
+      }).attr({
+        crossOrigin: crossOrigin, // "crossOrigin" must before "src" (#271)
+        src: bustCacheUrl || url
+      });
+    }
     // Hide and insert into the document
     $clone.addClass(CLASS_HIDE).insertAfter($this);
   };

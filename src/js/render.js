@@ -242,15 +242,18 @@
           canvas = this.canvas,
           aspectRatio = options.aspectRatio,
           autoCropArea = num(options.autoCropArea) || 0.8,
-          // container = this.container,
-          // containerWidth = container.width,
-          // containerHeight = container.height,
+          container = this.container,
+          containerWidth = container.width,
+          containerHeight = container.height,
           cropBox = {
             width: canvas.width,
             height: canvas.height
           };
 
-      // var  = this.image.width / this.image.naturalWidth;
+      var ratio = 1;
+      if (this.options.forceCanvasSize !== null)
+      { ratio = containerWidth / this.image.naturalWidth; // nominator is the available space, denominator is the forced width.
+      }
 
       if (aspectRatio) {
         if (canvas.height * aspectRatio > canvas.width) {
@@ -268,8 +271,8 @@
       cropBox.height = min(max(cropBox.height, cropBox.minHeight), cropBox.maxHeight);
       // cropBox.width = min(max(cropBox.width, cropBox.minWidth) * , cropBox.maxWidth * );
       // cropBox.height = min(max(cropBox.height, cropBox.minHeight) * , cropBox.maxHeight * );
-      // frank//cropBox.minWidth = min(cropBox.maxWidth * , cropBox.minWidth * );
-      // frank//cropBox.minHeight = min(cropBox.maxHeight * , cropBox.minHeight * );
+      cropBox.minWidth = min(cropBox.maxWidth * ratio, cropBox.minWidth * ratio);
+      cropBox.minHeight = min(cropBox.maxHeight * ratio, cropBox.minHeight * ratio);
 
       // The width of auto crop area must large than "minWidth", and the height too. (#164)
       cropBox.width = max(cropBox.minWidth, cropBox.width * autoCropArea);
@@ -279,10 +282,10 @@
 
       if (options.cropData !== null)
       {
-        cropBox.width = max(cropBox.minWidth, options.cropData.width);
-        cropBox.height = max(cropBox.minHeight, options.cropData.height);
-        // cropBox.oldLeft = cropBox.left = min(options.cropData.left, containerWidth - cropBox.width);
-        // cropBox.oldTop = cropBox.top = min(options.cropData.top, containerHeight - cropBox.height);
+        cropBox.width = max(cropBox.minWidth, options.cropData.width) * ratio;
+        cropBox.height = max(cropBox.minHeight, options.cropData.height) * ratio;
+        cropBox.oldLeft = cropBox.left = min(options.cropData.left * ratio, containerWidth - cropBox.width);
+        cropBox.oldTop = cropBox.top = min(options.cropData.top * ratio, containerHeight - cropBox.height);
       }
 
       this.initialCropBox = $.extend({}, cropBox);
@@ -326,8 +329,9 @@
         cropBox.minHeight = min(cropBox.maxHeight, cropBox.minHeight);
       }
 
-      if (position) {
-        if (strict) {
+      if (position)
+      {
+        if (strict && this.options.forceCanvasSize === null) {
           cropBox.minLeft = max(0, canvas.left);
           cropBox.minTop = max(0, canvas.top);
           cropBox.maxLeft = min(containerWidth, canvas.left + canvas.width) - cropBox.width;

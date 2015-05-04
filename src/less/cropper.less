@@ -1,7 +1,8 @@
 /*!
  * Cropper v@VERSION
- * https://github.com/fengyuanchen/cropper
+ * https://github.com/olignyf/cropper
  *
+ * Copyright (c) @YEAR Francois Oligny-Lemieux
  * Copyright (c) 2014-@YEAR Fengyuan Chen and contributors
  * Released under the MIT license
  *

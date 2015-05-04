@@ -1,5 +1,6 @@
 The MIT License (MIT)
 
+Copyright (c) 2015 Francois Oligny-Lemieux
 Copyright (c) 2014-2015 Fengyuan Chen and contributors
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

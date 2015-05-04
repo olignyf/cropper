@@ -269,10 +269,6 @@
       // Initialize auto crop area
       cropBox.width = min(max(cropBox.width, cropBox.minWidth), cropBox.maxWidth);
       cropBox.height = min(max(cropBox.height, cropBox.minHeight), cropBox.maxHeight);
-      // cropBox.width = min(max(cropBox.width, cropBox.minWidth) * , cropBox.maxWidth * );
-      // cropBox.height = min(max(cropBox.height, cropBox.minHeight) * , cropBox.maxHeight * );
-      cropBox.minWidth = min(cropBox.maxWidth * ratio, cropBox.minWidth * ratio);
-      cropBox.minHeight = min(cropBox.maxHeight * ratio, cropBox.minHeight * ratio);
 
       // The width of auto crop area must large than "minWidth", and the height too. (#164)
       cropBox.width = max(cropBox.minWidth, cropBox.width * autoCropArea);
@@ -303,6 +299,11 @@
           minCropBoxWidth,
           minCropBoxHeight;
 
+      var ratio = 1;
+      if (this.options.forceCanvasSize !== null)
+      { ratio = containerWidth / this.image.naturalWidth; // nominator is the available space, denominator is the forced width.
+      }
+
       if (size) {
         minCropBoxWidth = num(options.minCropBoxWidth) || 0;
         minCropBoxHeight = num(options.minCropBoxHeight) || 0;
@@ -325,8 +326,8 @@
         }
 
         // The "minWidth" must be less than "maxWidth", and the "minHeight" too.
-        cropBox.minWidth = min(cropBox.maxWidth, cropBox.minWidth);
-        cropBox.minHeight = min(cropBox.maxHeight, cropBox.minHeight);
+        cropBox.minWidth = min(cropBox.maxWidth * ratio, cropBox.minWidth * ratio);
+        cropBox.minHeight = min(cropBox.maxHeight * ratio, cropBox.minHeight * ratio);
       }
 
       if (position)
